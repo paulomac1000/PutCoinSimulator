@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Models.Block>
+@{
+    Layout = "";
+}
+
+<p>
+    @if (Model == null)
+    {
+        <div class="alert alert-warning">
+            <strong>Warning!</strong> Blockchain not initialized!
+        </div>
+    }
+    else if (!Model.Any())
+    {
+        <div class="alert alert-warning">
+            <strong>Warning!</strong> Blockchain is empty
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-success">
+            <strong>TODO!</strong> Here I'll show blockchain
+        </div>
+    }
+</p>

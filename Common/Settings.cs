@@ -4,5 +4,6 @@
     {
         public static int NumbersOfClients = 50;
         public static string ApplicationName = "PutCoin Simulator";
+        public static bool AppStarted = false;
     }
 }

@@ -1,0 +1,25 @@
+﻿@model IEnumerable<PutCoinSimulator.ViewModels.Home.PocketViewModel>
+@{
+    Layout = "";
+}
+
+<p>
+    @if (Model == null)
+    {
+        <div class="alert alert-warning">
+            <strong>Warning!</strong> Pockets list not initialized!
+        </div>
+    }
+    else if (!Model.Any())
+    {
+        <div class="alert alert-warning">
+            <strong>Warning!</strong> Pockets list is empty
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-success">
+            <strong>TODO!</strong> Here I'll show Pockets list
+        </div>
+    }
+</p>

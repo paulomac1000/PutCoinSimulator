@@ -1,0 +1,33 @@
+﻿@model PutCoinSimulator.ViewModels.Control.ControlIndexViewModel
+
+@{
+    ViewBag.Title = "Control";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="container">
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="alert @(Model.IsSuccess ? "alert-success" : "alert-danger")">
+            @Model.Message
+        </div>
+    }
+    <div class="col-md-12">
+        <div class="row">
+            @using (Html.BeginForm("NumbersOfClients", "Control", FormMethod.Post))
+            {
+                <h2>Number of clients</h2>
+                @Html.EditorFor(model => model.NumbersOfClients, new { @class = "form-control", id = "numbers-of-clients" })
+                <input class="btn btn-primary" type="submit" value="Save" @Html.Raw(Model.AppStarted ? "disabled = \"disabled\"" : string.Empty)/>
+            }
+
+            @using (Html.BeginForm("StartApp", "Control", FormMethod.Post))
+            {
+                <h2>Manage app</h2>
+                @Html.HiddenFor(model => model.AppStarted)
+                <input class="btn btn-primary" type="submit" value=@Html.Raw(Model.AppStarted ? "Stop app" : "Start app") ) />
+            }
+        </div>
+    </div>
+</div>
