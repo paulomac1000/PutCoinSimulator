@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <Folder Include="GeneratorThread\" />
+    <Folder Include="GeneratorThread\" />
+    <Folder Include="VisualisingThread\" />
     <Folder Include="VisualisingThread\" />
   </ItemGroup>
 
