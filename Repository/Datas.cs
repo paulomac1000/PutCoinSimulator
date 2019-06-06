@@ -8,5 +8,6 @@ namespace Repository
     {
         public static IEnumerable<Pocket> Pockets { get; set; }
         public static Block GenesisBlock { get; set; }
-    }
+        public static byte[] Salt { get; set; }
+}
 }

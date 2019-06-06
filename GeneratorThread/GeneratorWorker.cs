@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using Common;
+using Common.Interfaces;
 using GeneratorThread.Interfaces;
 using Models;
 using Models.AddingThread;
@@ -16,11 +18,13 @@ namespace GeneratorThread
     /// </summary>
     public class GeneratorWorker : BaseWorker, IGeneratorWorker
     {
-        private readonly PersonNameGenerator personGenerator;
+        private readonly IPersonNameGenerator personGenerator;
+        private readonly IHashGenerator hashGenerator;
 
         public GeneratorWorker()
         {
             personGenerator = new PersonNameGenerator();
+            hashGenerator = new HashGenerator();
         }
 
         public override void Work()
@@ -30,7 +34,7 @@ namespace GeneratorThread
 
         public void GenerateClientsPocket()
         {
-            var pocekts = new List<Pocket>();
+            var pockets = new List<Pocket>();
 
             for (var i = 0; i < Settings.NumbersOfClients; i++)
             {
@@ -40,25 +44,26 @@ namespace GeneratorThread
                     PrivateKey = Guid.NewGuid().ToString(),
                     PublicKey = Guid.NewGuid().ToString()
                 };
-                pocekts.Add(pocket);
+                pockets.Add(pocket);
             }
 
-            Datas.Pockets = pocekts;
+            Datas.Pockets = pockets;
         }
 
         public void CreateGenesisBlock()
         {
-            Datas.GenesisBlock = new Block
+            var block = new Block
             {
-                BlockHash = Guid.NewGuid().ToString(),
                 Data = new BlockData
                 {
                     Amount = 50,
                     Receiver = GetRandomClient().OwnerName
                 },
-                Hash = null, //generate hash?
-                PreviousBlockHash = string.Empty
+                PreviousBlockHash = Settings.FirstBlockPreviousBlockHashValue
             };
+            block.Hash = hashGenerator.GenerateHashFromBlock(block.Data, block.PreviousBlockHash);
+
+            Datas.GenesisBlock = null;
         }
 
         public void GenerateProperTransfer()
@@ -71,9 +76,9 @@ namespace GeneratorThread
             throw new NotImplementedException();
         }
 
-        private Pocket GetRandomClient()
+        private static Pocket GetRandomClient()
         {
-            var random = new Random(DateTime.Now.Millisecond);
+            var random = new SecureRandom();
             return Datas.Pockets.ElementAt(random.Next(0, Settings.NumbersOfClients));
         }
     }

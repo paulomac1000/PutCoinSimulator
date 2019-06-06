@@ -197,15 +197,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{84f01bfc-ac5b-4343-bb5d-32fc80205d2a}</Project>
+      <Project>{9821E34E-ACBF-4000-919B-BB0B8835ED19}</Project>
       <Name>Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
-      <Project>{ac5725cf-06d0-4c86-9c2d-fd9dd13c825a}</Project>
+      <Project>{2D79521C-8605-4163-B3D1-357EA23AC646}</Project>
       <Name>Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\ThreadManager\ThreadManager.csproj">
-      <Project>{1ef9bf7c-38fc-4f39-8cf0-58993b2c0af6}</Project>
+      <Project>{C9C7E470-8C45-4429-A24C-AB77E3A94429}</Project>
       <Name>ThreadManager</Name>
     </ProjectReference>
   </ItemGroup>
