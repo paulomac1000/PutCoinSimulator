@@ -49,6 +49,14 @@
       <Project>{9821E34E-ACBF-4000-919B-BB0B8835ED19}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Models\Models.csproj">
+      <Project>{2D79521C-8605-4163-B3D1-357EA23AC646}</Project>
+      <Name>Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Repository\Repository.csproj">
+      <Project>{BAFC8797-15D8-41E4-9D54-0FCEF41FFEFB}</Project>
+      <Name>Repository</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

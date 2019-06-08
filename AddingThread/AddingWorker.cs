@@ -1,17 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using AddingThread.Interfaces;
 using Common;
+using Models;
+using Repository;
 
 namespace AddingThread
 {
     /// <summary>
     /// Second Thread
     /// </summary>
-    public class AddingWorker : BaseWorker, IAddingWorker
+    public class AddingWorker : IAddingWorker
     {
-        public override void Work()
+        public string Name => nameof(AddingWorker);
+
+        public void Work()
         {
-            throw new NotImplementedException();
+            Datas.RejectedTransactions = new List<Transaction>();
+            Datas.CommisionedTransactions = new List<Transaction>();
+
+            while (Settings.AppStarted)
+            {
+                Thread.Sleep(10000);
+            }
         }
 
         public bool VerifyTransaction()

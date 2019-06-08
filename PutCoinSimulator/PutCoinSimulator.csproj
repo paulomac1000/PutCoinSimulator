@@ -208,6 +208,10 @@
       <Project>{C9C7E470-8C45-4429-A24C-AB77E3A94429}</Project>
       <Name>ThreadManager</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VisualisingThread\VisualisingThread.csproj">
+      <Project>{F1C51B83-4621-44D2-86F8-2CE391563816}</Project>
+      <Name>VisualisingThread</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -18,8 +18,31 @@
     }
     else
     {
-        <div class="alert alert-success">
-            <strong>TODO!</strong> Here I'll show blockchain
-        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Hash</th>
+                    <th>Previous block hash</th>
+                    <th>Transactions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var block in Model)
+                {
+                    <tr>
+                        <td>@block.Hash</td>
+                        <td>@block.PreviousBlockHash</td>
+                            @foreach (var transaction in block.Data.Transactions)
+                            {
+                                <td>
+                                    @nameof(transaction.Sender): @transaction.Sender
+                                    @nameof(transaction.Receiver): @transaction.Receiver
+                                    @nameof(transaction.Amount): @transaction.Amount
+                                </td>
+                            }
+                    </tr>
+                }
+            </tbody>
+        </table>
     }
 </p>

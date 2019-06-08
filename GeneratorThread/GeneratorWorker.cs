@@ -16,11 +16,13 @@ namespace GeneratorThread
     /// <summary>
     /// First thread
     /// </summary>
-    public class GeneratorWorker : BaseWorker, IGeneratorWorker
+    public class GeneratorWorker : IGeneratorWorker
     {
         private readonly IPersonNameGenerator personGenerator;
         private readonly IHashGenerator hashGenerator;
         private readonly SecureRandom secureRandom;
+
+        public string Name => nameof(GeneratorWorker);
 
         public GeneratorWorker()
         {
@@ -29,9 +31,13 @@ namespace GeneratorThread
             secureRandom = new SecureRandom();
         }
 
-        public override void Work()
+        public void Work()
         {
+            Datas.Blockchain = new List<Block>();
+            Datas.WaitingTransactions = new Queue<Transaction>();
+
             GenerateClientsPocket();
+            
             CreateGenesisBlock();
             while (Settings.AppStarted)
             {
@@ -84,7 +90,7 @@ namespace GeneratorThread
             };
             block.Hash = hashGenerator.GenerateHashFromBlock(block.Data, block.PreviousBlockHash);
 
-            Datas.GenesisBlock = null;
+            Datas.Blockchain.Add(block);
         }
 
         public void GenerateProperTransfer()

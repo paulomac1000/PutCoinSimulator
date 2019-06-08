@@ -40,9 +40,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetManager.cs" />
     <Compile Include="Interfaces\IManager.cs" />
     <Compile Include="Manager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AddingThread\AddingThread.csproj">
+      <Project>{4650B6FC-C4B5-41BB-A6EA-564E3011540A}</Project>
+      <Name>AddingThread</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{9821E34E-ACBF-4000-919B-BB0B8835ED19}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GeneratorThread\GeneratorThread.csproj">
+      <Project>{5E4EEC88-4206-42C9-92C2-B0DF39540566}</Project>
+      <Name>GeneratorThread</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VisualisingThread\VisualisingThread.csproj">
+      <Project>{F1C51B83-4621-44D2-86F8-2CE391563816}</Project>
+      <Name>VisualisingThread</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

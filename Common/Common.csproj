@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseWorker.cs" />
     <Compile Include="HashGenerator.cs" />
     <Compile Include="Interfaces\IBaseWorker.cs" />
     <Compile Include="Interfaces\IHashGenerator.cs" />

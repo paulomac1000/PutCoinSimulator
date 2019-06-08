@@ -18,8 +18,24 @@
     }
     else
     {
-        <div class="alert alert-success">
-            <strong>TODO!</strong> Here I'll show Commisioned Transactions list
-        </div>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Sender</th>
+                <th>Receiver</th>
+                <th>Amount</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var transaction in Model)
+            {
+                <tr>
+                    <td>@transaction.Sender</td>
+                    <td>@transaction.Receiver</td>
+                    <td>@transaction.Amount</td>
+                </tr>
+            }
+            </tbody>
+        </table>
     }
 </p>

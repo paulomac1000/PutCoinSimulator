@@ -1,7 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading;
 using Common;
 using Models;
+using Models.AddingThread;
+using Repository;
 using VisualisingThread.Interfaces;
 
 namespace VisualisingThread
@@ -9,31 +11,26 @@ namespace VisualisingThread
     /// <summary>
     /// Third thread
     /// </summary>
-    public class VisualisingWorker : BaseWorker, IVisualisingWorker
+    public class VisualisingWorker : IVisualisingWorker
     {
-        public override void Work()
+        public string Name => nameof(VisualisingWorker);
+
+        public void Work()
         {
-            throw new NotImplementedException();
+            while (Settings.AppStarted)
+            {
+                Thread.Sleep(10000);
+            }
         }
 
-        public IEnumerable<Block> GetBlockchain()
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<Block> GetBlockchain => Datas.Blockchain;
 
-        public IEnumerable<Transaction> GetCommisionedTransactions()
-        {
-            throw new NotImplementedException();
-        }
+        // transakcje zatwierdzone
+        public IEnumerable<Transaction> GetCommisionedTransactions => Datas.CommisionedTransactions;
 
-        public IEnumerable<Transaction> GetUnreleasedTransactions()
-        {
-            throw new NotImplementedException();
-        }
+        // transakcje niewydane
+        public IEnumerable<Transaction> GetUnreleasedTransactions => Datas.WaitingTransactions;
 
-        public IEnumerable<PocketAmount> GetPockets()
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<Pocket> GetPockets => Datas.Pockets;
     }
 }

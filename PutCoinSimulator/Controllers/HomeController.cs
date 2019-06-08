@@ -13,37 +13,36 @@ namespace PutCoinSimulator.Controllers
 
         public HomeController()
         {
-            manager = new Manager();
+            manager = GetManager.Manager;
         }
 
         public ActionResult Index()
         {
-            var model = new HomeIndexViewModel();
-            model.RefreshPartialsMilisecondsInterval = 2000; //2s
+            var model = new HomeIndexViewModel {RefreshPartialsMilisecondsInterval = 2000}; //2s
             return View(model);
         }
 
         public ActionResult Blockchain()
         {
-            IEnumerable<Block> model = null;
+            var model = manager.VisualisingWorker.GetBlockchain;
             return View("_BlockchainPartial", model);
         }
 
         public ActionResult CommisionedTransactions()
         {
-            IEnumerable<Transaction> model = null;
+            var model = manager.VisualisingWorker.GetCommisionedTransactions;
             return View("_CommisionedTransactionsPartial", model);
         }
 
         public ActionResult UnreleasedTransactions()
         {
-            IEnumerable<Transaction> model = null;
+            var model = manager.VisualisingWorker.GetUnreleasedTransactions;
             return View("_UnreleasedTransactionsPartial", model);
         }
 
         public ActionResult Pockets()
         {
-            IEnumerable<PocketViewModel> model = null;
+            var model = manager.VisualisingWorker.GetPockets;
             return View("_PocketsPartial", model);
         }
     }

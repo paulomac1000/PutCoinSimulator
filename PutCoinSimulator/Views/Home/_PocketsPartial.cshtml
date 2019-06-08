@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PutCoinSimulator.ViewModels.Home.PocketViewModel>
+﻿@model IEnumerable<Models.AddingThread.Pocket>
 @{
     Layout = "";
 }
@@ -18,8 +18,24 @@
     }
     else
     {
-        <div class="alert alert-success">
-            <strong>TODO!</strong> Here I'll show Pockets list
-        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Owner name</th>
+                    <th>Private key</th>
+                    <th>Public key</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pocket in Model)
+                {
+                    <tr>
+                        <td>@pocket.OwnerName</td>
+                        <td>@pocket.PrivateKey</td>
+                        <td>@pocket.PublicKey</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     }
 </p>

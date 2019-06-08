@@ -1,11 +1,20 @@
 ﻿using System.Web.Mvc;
 using Common;
 using PutCoinSimulator.ViewModels.Control;
+using ThreadManager;
+using ThreadManager.Interfaces;
 
 namespace PutCoinSimulator.Controllers
 {
     public class ControlController : Controller
     {
+        private readonly IManager manager;
+
+        public ControlController()
+        {
+            manager = GetManager.Manager;
+        }
+
         public ActionResult Index(string message, bool isSuccess = true)
         {
             var model = new ControlIndexViewModel
@@ -41,6 +50,11 @@ namespace PutCoinSimulator.Controllers
         public ActionResult StartApp(ControlIndexViewModel model)
         {
             Settings.AppStarted = !model.AppStarted;
+            if (Settings.AppStarted)
+                manager.StartWorks();
+            else
+                manager.StopWorks();
+
             var message = $"App { (Settings.AppStarted ? "Started" : "Stopped") }";
             return RedirectToAction(nameof(Index), new { message });
         }
