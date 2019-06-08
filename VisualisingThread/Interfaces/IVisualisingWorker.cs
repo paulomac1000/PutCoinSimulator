@@ -4,6 +4,9 @@ using Models;
 
 namespace VisualisingThread.Interfaces
 {
+    /// <summary>
+    /// Third thread
+    /// </summary>
     public interface IVisualisingWorker : IWork
     {
         IEnumerable<Block> GetBlockchain();
