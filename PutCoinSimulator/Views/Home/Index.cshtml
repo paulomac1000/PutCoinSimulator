@@ -46,6 +46,22 @@
     </div>
 
     <div class="row">
+        <h2>Rejected Transactions</h2>
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#rejected-transactions-collapse">Show rejected Transactions</a>
+                    </h4>
+                </div>
+                <div id="rejected-transactions-collapse" class="panel-collapse collapse">
+                    <div id="rejected-transactions-partial">Loading...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         <h2>Unreleased Transactions</h2>
         <div class="panel-group">
             <div class="panel panel-default">
@@ -87,6 +103,7 @@
     function refreshPartial() {
         $("#blockchain-partial").load('@Url.Action("Blockchain")');
         $("#commisioned-transactions-partial").load('@Url.Action("CommisionedTransactions")');
+        $("#rejected-transactions-partial").load('@Url.Action("RejectedTransactions")');
         $("#unreleased-transactions-partial").load('@Url.Action("UnreleasedTransactions")');
         $("#pockets-partial").load('@Url.Action("Pockets")');
     }

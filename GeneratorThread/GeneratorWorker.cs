@@ -76,6 +76,7 @@ namespace GeneratorThread
                 {
                     new Transaction
                     {
+                        Time = DateTime.Now,
                         Sender = Settings.FirstBlockSenderName,
                         Amount = 50,
                         Receiver = GetRandomClient().OwnerName
@@ -100,6 +101,7 @@ namespace GeneratorThread
 
             var transaction = new Transaction
             {
+                Time = DateTime.Now,
                 Sender = sender.OwnerName,
                 Receiver = receiver.OwnerName,
                 Amount = secureRandom.Next(1, 30) / 10.0 //0.1 - 3.0
@@ -113,37 +115,38 @@ namespace GeneratorThread
             var receiver = GetRandomReceiver(sender);
 
             Transaction transaction = null;
-            if (type == FakeTransactionType.BadSignature)
+            switch (type)
             {
-                transaction = new Transaction
-                {
-                    Sender = sender.OwnerName,
-                    Receiver = sender.OwnerName,
-                    Amount = secureRandom.Next(1, 30) / 10.0 //0.1 - 3.0
-                };
-            }
-            else if(type == FakeTransactionType.DoubleSpending)
-            {
-                transaction = new Transaction
-                {
-                    Sender = sender.OwnerName,
-                    Receiver = receiver.OwnerName,
-                    Amount = secureRandom.Next(1, 30) / 10.0 //0.1 - 3.0
-                };
-                Datas.WaitingTransactions.Enqueue(transaction);
-            }
-            else if(type == FakeTransactionType.BadAmount)
-            {
-                transaction = new Transaction
-                {
-                    Sender = sender.OwnerName,
-                    Receiver = receiver.OwnerName,
-                    Amount = -secureRandom.Next(1, 30) / 10.0 //0.1 - 3.0
-                };
-            }
-            else
-            {
-                throw new NotImplementedException();
+                case FakeTransactionType.BadSignature:
+                    transaction = new Transaction
+                    {
+                        Time = DateTime.Now,
+                        Sender = sender.OwnerName,
+                        Receiver = sender.OwnerName,
+                        Amount = secureRandom.Next(1, 30) / 10.0 //0.1 - 3.0
+                    };
+                    break;
+                case FakeTransactionType.DoubleSpending:
+                    transaction = new Transaction
+                    {
+                        Time = DateTime.Now,
+                        Sender = sender.OwnerName,
+                        Receiver = receiver.OwnerName,
+                        Amount = secureRandom.Next(1, 30) / 10.0 //0.1 - 3.0
+                    };
+                    Datas.WaitingTransactions.Enqueue(transaction);
+                    break;
+                case FakeTransactionType.BadAmount:
+                    transaction = new Transaction
+                    {
+                        Time = DateTime.Now,
+                        Sender = sender.OwnerName,
+                        Receiver = receiver.OwnerName,
+                        Amount = -(secureRandom.Next(1, 30) / 10.0) //0.1 - 3.0
+                    };
+                    break;
+                default:
+                    throw new NotImplementedException();
             }
             Datas.WaitingTransactions.Enqueue(transaction);
         }

@@ -178,6 +178,7 @@
     <Content Include="Views\Home\_CommisionedTransactionsPartial.cshtml" />
     <Content Include="Views\Home\_UnreleasedTransactionsPartial.cshtml" />
     <Content Include="Views\Home\_PocketsPartial.cshtml" />
+    <Content Include="Views\Home\_RejectedTransactionsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

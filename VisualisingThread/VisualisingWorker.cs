@@ -31,6 +31,9 @@ namespace VisualisingThread
         // transakcje niewydane
         public IEnumerable<Transaction> GetUnreleasedTransactions => Datas.WaitingTransactions;
 
+        //transakcje odrzucone
+        public IEnumerable<Transaction> GetRejectedTransactions => Datas.RejectedTransactions;
+
         public IEnumerable<Pocket> GetPockets => Datas.Pockets;
     }
 }

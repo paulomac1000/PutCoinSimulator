@@ -7,13 +7,13 @@
     @if (Model == null)
     {
         <div class="alert alert-warning">
-            <strong>Warning!</strong> Unreleased Transactions list not initialized!
+            <strong>Warning!</strong> Rejected Transactions list not initialized!
         </div>
     }
     else if (!Model.Any())
     {
         <div class="alert alert-warning">
-            <strong>Warning!</strong> Unreleased Transactions list is empty
+            <strong>Warning!</strong> Rejected Transactions list is empty
         </div>
     }
     else
@@ -28,15 +28,15 @@
             </tr>
             </thead>
             <tbody>
-                @foreach (var transaction in Model)
-                {
-                    <tr>
-                        <td>@transaction.Time</td>
-                        <td>@transaction.Sender</td>
-                        <td>@transaction.Receiver</td>
-                        <td>@transaction.Amount</td>
-                    </tr>
-                }
+            @foreach (var transaction in Model)
+            {
+                <tr>
+                    <td>@transaction.Time</td>
+                    <td>@transaction.Sender</td>
+                    <td>@transaction.Receiver</td>
+                    <td>@transaction.Amount</td>
+                </tr>
+            }
             </tbody>
         </table>
     }

@@ -21,6 +21,7 @@
         <table class="table table-hover">
             <thead>
             <tr>
+                <th>Time</th>
                 <th>Sender</th>
                 <th>Receiver</th>
                 <th>Amount</th>
@@ -30,6 +31,7 @@
             @foreach (var transaction in Model)
             {
                 <tr>
+                    <td>@transaction.Time</td>
                     <td>@transaction.Sender</td>
                     <td>@transaction.Receiver</td>
                     <td>@transaction.Amount</td>

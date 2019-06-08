@@ -40,6 +40,12 @@ namespace PutCoinSimulator.Controllers
             return View("_UnreleasedTransactionsPartial", model);
         }
 
+        public ActionResult RejectedTransactions()
+        {
+            var model = manager.VisualisingWorker.GetRejectedTransactions;
+            return View("_RejectedTransactionsPartial", model);
+        }
+
         public ActionResult Pockets()
         {
             var model = manager.VisualisingWorker.GetPockets;
