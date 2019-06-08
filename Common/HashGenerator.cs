@@ -35,7 +35,8 @@ namespace Common
         public byte[] CreateSalt()
         {
             byte[] salt;
-            new RNGCryptoServiceProvider(salt = new byte[16]);
+            var rng = new RNGCryptoServiceProvider(salt = new byte[16]);
+            rng.GetBytes(salt);
             return salt;
         }
     }

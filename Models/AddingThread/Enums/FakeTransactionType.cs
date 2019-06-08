@@ -5,16 +5,16 @@
         /// <summary>
         /// Generated block has a bad signature
         /// </summary>
-        BadSignature,
+        BadSignature = 1,
 
         /// <summary>
         /// Generated duplicated blocks which double-charge sender of the transaction
         /// </summary>
-        DoubleSpending,
+        DoubleSpending = 2,
 
         /// <summary>
         /// Generated block containing unproper transaction amount
         /// </summary>
-        BadAmount
+        BadAmount = 3
     }
 }

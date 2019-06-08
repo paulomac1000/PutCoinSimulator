@@ -20,16 +20,30 @@ namespace GeneratorThread
     {
         private readonly IPersonNameGenerator personGenerator;
         private readonly IHashGenerator hashGenerator;
+        private readonly SecureRandom secureRandom;
 
         public GeneratorWorker()
         {
             personGenerator = new PersonNameGenerator();
             hashGenerator = new HashGenerator();
+            secureRandom = new SecureRandom();
         }
 
         public override void Work()
         {
-            
+            GenerateClientsPocket();
+            CreateGenesisBlock();
+            while (Settings.AppStarted)
+            {
+                if (DateTime.Now.Millisecond % 4 == 0)
+                {
+                    GenerateUnproperTransaction((FakeTransactionType)secureRandom.Next(1,3));
+                }
+                else
+                {
+                    GenerateProperTransfer();
+                }
+            }
         }
 
         public void GenerateClientsPocket()

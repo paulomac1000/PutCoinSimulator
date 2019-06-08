@@ -7,7 +7,6 @@ namespace Common
     {
         private readonly RandomNumberGenerator rng = new RNGCryptoServiceProvider();
 
-
         public int Next()
         {
             var data = new byte[sizeof(int)];
