@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Models.AddingThread.Pocket>
+﻿@model IEnumerable<PutCoinSimulator.ViewModels.Home.PocketViewModel>
 @{
     Layout = "";
 }
@@ -24,6 +24,7 @@
                     <th>Owner name</th>
                     <th>Private key</th>
                     <th>Public key</th>
+                    <th>Account balance</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,6 +34,7 @@
                         <td>@pocket.OwnerName</td>
                         <td>@pocket.PrivateKey</td>
                         <td>@pocket.PublicKey</td>
+                        <td>@pocket.AccountBalance</td>
                     </tr>
                 }
             </tbody>

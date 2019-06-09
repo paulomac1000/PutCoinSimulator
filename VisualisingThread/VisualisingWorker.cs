@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Common;
 using Models;
@@ -29,11 +31,12 @@ namespace VisualisingThread
         public IEnumerable<Transaction> GetCommisionedTransactions => Datas.CommisionedTransactions;
 
         // transakcje niewydane
-        public IEnumerable<Transaction> GetUnreleasedTransactions => Datas.WaitingTransactions;
+        public IEnumerable<Transaction> GetUnreleasedTransactions => Datas.WaitingTransactions.AsEnumerable();
 
         //transakcje odrzucone
         public IEnumerable<Transaction> GetRejectedTransactions => Datas.RejectedTransactions;
 
         public IEnumerable<Pocket> GetPockets => Datas.Pockets;
+        
     }
 }

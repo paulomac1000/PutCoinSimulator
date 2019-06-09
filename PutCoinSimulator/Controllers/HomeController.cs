@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using Models;
 using PutCoinSimulator.ViewModels.Home;
+using Repository;
 using ThreadManager;
 using ThreadManager.Interfaces;
 
@@ -48,7 +50,14 @@ namespace PutCoinSimulator.Controllers
 
         public ActionResult Pockets()
         {
-            var model = manager.VisualisingWorker.GetPockets;
+            var model = manager.VisualisingWorker.GetPockets?.Select(p => new PocketViewModel
+            {
+                OwnerName = p.OwnerName,
+                PrivateKey = p.PrivateKey,
+                PublicKey = p.PublicKey,
+                AccountBalance = Helpers.GetAccountBalanceByOwnerName(p.OwnerName)
+            });
+
             return View("_PocketsPartial", model);
         }
     }

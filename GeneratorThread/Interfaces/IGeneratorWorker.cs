@@ -9,7 +9,7 @@ namespace GeneratorThread.Interfaces
     public interface IGeneratorWorker : IWork
     {
         void GenerateClientsPocket();
-        void CreateGenesisBlock();
+        void CreateTransactionForGenesisBlock();
         void GenerateProperTransfer();
         void GenerateUnproperTransaction(FakeTransactionType type);
     }

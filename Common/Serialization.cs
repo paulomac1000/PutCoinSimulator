@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Xml.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Common
 {
@@ -7,21 +6,12 @@ namespace Common
     {
         public static T Deserialize<T>(this string toDeserialize)
         {
-            var xmlSerializer = new XmlSerializer(typeof(T));
-            using (var textReader = new StringReader(toDeserialize))
-            {
-                return (T)xmlSerializer.Deserialize(textReader);
-            }
+            return JsonConvert.DeserializeObject<T>(toDeserialize);
         }
 
         public static string Serialize<T>(this T toSerialize)
         {
-            var xmlSerializer = new XmlSerializer(typeof(T));
-            using (var textWriter = new StringWriter())
-            {
-                xmlSerializer.Serialize(textWriter, toSerialize);
-                return textWriter.ToString();
-            }
+            return JsonConvert.SerializeObject(toSerialize);
         }
     }
 }

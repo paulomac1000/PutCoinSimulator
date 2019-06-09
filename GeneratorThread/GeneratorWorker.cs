@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Common;
-using Common.Interfaces;
 using GeneratorThread.Interfaces;
 using Models;
 using Models.AddingThread;
@@ -19,7 +18,6 @@ namespace GeneratorThread
     public class GeneratorWorker : IGeneratorWorker
     {
         private readonly IPersonNameGenerator personGenerator;
-        private readonly IHashGenerator hashGenerator;
         private readonly SecureRandom secureRandom;
 
         public string Name => nameof(GeneratorWorker);
@@ -27,18 +25,17 @@ namespace GeneratorThread
         public GeneratorWorker()
         {
             personGenerator = new PersonNameGenerator();
-            hashGenerator = new HashGenerator();
             secureRandom = new SecureRandom();
         }
 
         public void Work()
         {
             Datas.Blockchain = new List<Block>();
-            Datas.WaitingTransactions = new Queue<Transaction>();
+            Datas.WaitingTransactions = new SynchronizedCollection<Transaction>();
 
             GenerateClientsPocket();
-            
-            CreateGenesisBlock();
+            CreateTransactionForGenesisBlock();
+
             while (Settings.AppStarted)
             {
                 if (secureRandom.Next(1, 100) <= Settings.ChanceForGenerateFakeTransactionInPercent)
@@ -68,35 +65,26 @@ namespace GeneratorThread
             Datas.Pockets = pockets;
         }
 
-        public void CreateGenesisBlock()
+        public void CreateTransactionForGenesisBlock()
         {
-            var blockData = new BlockData
+            var transaction = new Transaction
             {
-                Transactions = new List<Transaction>
-                {
-                    new Transaction
-                    {
-                        Time = DateTime.Now,
-                        Sender = Settings.FirstBlockSenderName,
-                        Amount = 50,
-                        Receiver = GetRandomClient().OwnerName
-                    }
-                }
+                Time = DateTime.Now,
+                Sender = Settings.FirstBlockSenderName,
+                Amount = 50,
+                Receiver = GetRandomClient().OwnerName
             };
-
-            var block = new Block
-            {
-                Data = blockData,
-                PreviousBlockHash = Settings.FirstBlockPreviousBlockHashValue
-            };
-            block.Hash = hashGenerator.GenerateHashFromBlock(block.Data, block.PreviousBlockHash);
-
-            Datas.Blockchain.Add(block);
+            AddTransaction(transaction);
+            Thread.Sleep(1500);
         }
 
         public void GenerateProperTransfer()
         {
-            var sender = GetRandomClient();
+            var pocketsWithMoney = Helpers.GetPocketWhichHasMoney().ToList();
+            if (!pocketsWithMoney.Any())
+                return;
+
+            var sender = pocketsWithMoney.ElementAt(secureRandom.Next(0, pocketsWithMoney.Count - 1));
             var receiver = GetRandomReceiver(sender);
 
             var transaction = new Transaction
@@ -104,9 +92,9 @@ namespace GeneratorThread
                 Time = DateTime.Now,
                 Sender = sender.OwnerName,
                 Receiver = receiver.OwnerName,
-                Amount = secureRandom.Next(1, 30) / 10.0 //0.1 - 3.0
+                Amount = secureRandom.Next(1, (int)Helpers.GetAccountBalanceByOwnerName(sender.OwnerName) * 10) / 10.0
             };
-            Datas.WaitingTransactions.Enqueue(transaction);
+            AddTransaction(transaction);
         }
 
         public void GenerateUnproperTransaction(FakeTransactionType type)
@@ -118,6 +106,7 @@ namespace GeneratorThread
             switch (type)
             {
                 case FakeTransactionType.BadSignature:
+               // case FakeTransactionType.DoubleSpending:
                     transaction = new Transaction
                     {
                         Time = DateTime.Now,
@@ -134,7 +123,7 @@ namespace GeneratorThread
                         Receiver = receiver.OwnerName,
                         Amount = secureRandom.Next(1, 30) / 10.0 //0.1 - 3.0
                     };
-                    Datas.WaitingTransactions.Enqueue(transaction);
+                    AddTransaction(transaction);
                     break;
                 case FakeTransactionType.BadAmount:
                     transaction = new Transaction
@@ -142,22 +131,26 @@ namespace GeneratorThread
                         Time = DateTime.Now,
                         Sender = sender.OwnerName,
                         Receiver = receiver.OwnerName,
-                        Amount = -(secureRandom.Next(1, 30) / 10.0) //0.1 - 3.0
+                        Amount = -1 * (secureRandom.Next(1, 30) / 10.0) //0.1 - 3.0
                     };
                     break;
                 default:
                     throw new NotImplementedException();
             }
-            Datas.WaitingTransactions.Enqueue(transaction);
+            AddTransaction(transaction);
         }
 
-        private static Pocket GetRandomClient()
+        private static void AddTransaction(Transaction transaction)
         {
-            var random = new SecureRandom();
-            return Datas.Pockets.ElementAt(random.Next(0, Settings.NumbersOfClients));
+            Datas.WaitingTransactions.Add(transaction);
         }
 
-        private static Pocket GetRandomReceiver(Pocket sender)
+        private Pocket GetRandomClient()
+        {
+            return Datas.Pockets.ElementAt(secureRandom.Next(0, Settings.NumbersOfClients));
+        }
+
+        private Pocket GetRandomReceiver(Pocket sender)
         {
             var receiver = GetRandomClient();
             while (sender == receiver)

@@ -5,6 +5,6 @@
         public string OwnerName { get; set; }
         public string PrivateKey { get; set; }
         public string PublicKey { get; set; }
-        public double Amount { get; set; }
+        public double AccountBalance { get; set; }
     }
 }

@@ -25,7 +25,7 @@ namespace Common
             {
                 throw new ArgumentOutOfRangeException();
             }
-            return (int)Math.Floor((minValue + ((double)maxValue - minValue) * NextDouble()));
+            return (int)Math.Floor(minValue + ((double)maxValue - minValue) * NextDouble());
         }
 
         public double NextDouble()

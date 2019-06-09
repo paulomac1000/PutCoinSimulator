@@ -1,4 +1,6 @@
-﻿using Common.Interfaces;
+﻿using System.Collections.Generic;
+using Common.Interfaces;
+using Models;
 
 namespace AddingThread.Interfaces
 {
@@ -7,8 +9,8 @@ namespace AddingThread.Interfaces
     /// </summary>
     public interface IAddingWorker : IWork
     {
-        bool VerifyTransaction();
-        string FindNonceForBlock();
-        void AddBlockToBlockchain();
+        void VerifyTransactions(List<Transaction> transactions);
+        string FindNonceForBlock(Block block);
+        void AddBlockToBlockchain(Block block);
     }
 }
