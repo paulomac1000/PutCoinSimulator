@@ -158,7 +158,7 @@ namespace AddingThread
 
         private Pocket GetRandomClient()
         {
-            return Datas.Pockets.ElementAt(secureRandom.Next(0, Settings.NumbersOfClients + 1));
+            return Datas.Pockets.ElementAt(secureRandom.Next(0, Settings.NumbersOfClients));
         }
     }
 }
