@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Models.AddingThread;
 
@@ -16,7 +17,7 @@ namespace Repository
                     b.Data.Transactions.Where(t => t.Sender == ownerName).Select(t => t.Amount))
                 .Sum();
 
-            return valueOfIncomingTransactions - valueOfOutgoingTransactions;
+            return Math.Round(valueOfIncomingTransactions, 1) - Math.Round(valueOfOutgoingTransactions, 1);
         }
 
         public static IEnumerable<Pocket> GetPocketWhichHasMoney(double minAccountBalance = 0)

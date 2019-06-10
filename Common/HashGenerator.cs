@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Text;
 using Common.Interfaces;
 using Models;
 using Repository;
@@ -15,11 +16,11 @@ namespace Common
             if (Datas.Salt == null)
                 Datas.Salt = CreateSalt();
 
-            var hash = GenerateHash(serialized, Datas.Salt);
+            var hash = GenerateHashRfc2898(serialized, Datas.Salt);
             return hash;
         }
 
-        public string GenerateHash(string input, byte[] salt)
+        public string GenerateHashRfc2898(string input, byte[] salt)
         {
             var pbkdf2 = new Rfc2898DeriveBytes(input, salt, Settings.HashingIterations);
             var hash = pbkdf2.GetBytes(20);

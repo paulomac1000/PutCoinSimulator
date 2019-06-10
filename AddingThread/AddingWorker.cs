@@ -5,6 +5,7 @@ using AddingThread.Interfaces;
 using Common;
 using Common.Interfaces;
 using Models;
+using Models.AddingThread;
 using Repository;
 
 namespace AddingThread
@@ -15,10 +16,12 @@ namespace AddingThread
     public class AddingWorker : IAddingWorker
     {
         private readonly IHashGenerator hashGenerator;
+        private readonly SecureRandom secureRandom;
 
         public AddingWorker()
         {
             hashGenerator = new HashGenerator();
+            secureRandom = new SecureRandom();
         }
 
         public string Name => nameof(AddingWorker);
@@ -37,8 +40,11 @@ namespace AddingThread
                 Datas.WaitingTransactions.Clear();
 
                 VerifyTransactions(transactions);
-                if(!transactions.Any())
+                if (!transactions.Any())
                     continue;
+
+                if (Datas.Blockchain != null && Datas.Blockchain.Any())
+                    transactions.Add(GenerateRewardtransaction());
 
                 var blockData = new BlockData { Transactions = transactions };
                 var block = new Block
@@ -89,21 +95,27 @@ namespace AddingThread
                 }
             }
 
-            var whereOwnerHasNotEnoughMone = new List<Transaction>();
-            foreach (var transaction in transactions)
+            var groupedTransactionsBySender = transactions.GroupBy(t => t.Sender);
+            foreach (var group in groupedTransactionsBySender)
             {
-                if (transaction.Sender == Settings.FirstBlockSenderName)
+                if (group.Key == Settings.FirstBlockSenderName || group.Key == Settings.RewardSenderName)
                     continue;
 
-                if (Helpers.GetAccountBalanceByOwnerName(transaction.Sender) < transaction.Amount)
-                    whereOwnerHasNotEnoughMone.Add(transaction);
-            }
-            if (whereOwnerHasNotEnoughMone.Any())
-            {
-                foreach (var transaction in whereOwnerHasNotEnoughMone)
+                var sumBySender = group.Sum(g => g.Amount);
+                var accountbalace = Helpers.GetAccountBalanceByOwnerName(group.Key);
+                if (!(accountbalace < sumBySender)) continue;
+
+                foreach (var transaction in group)
                 {
-                    Datas.RejectedTransactions.Add(transaction);
-                    transactions.Remove(transaction);
+                    if (transaction.Amount > accountbalace)
+                    {
+                        Datas.RejectedTransactions.Add(transaction);
+                        transactions.Remove(transaction);
+                    }
+                    else
+                    {
+                        accountbalace -= transaction.Amount;
+                    }
                 }
             }
         }
@@ -129,6 +141,24 @@ namespace AddingThread
                 : Settings.FirstBlockPreviousBlockHashValue;
 
             return previousBlockHash;
+        }
+
+        private Transaction GenerateRewardtransaction()
+        {
+            var rewardTransaction = new Transaction
+            {
+                Time = DateTime.Now,
+                Sender = Settings.RewardSenderName,
+                Receiver = GetRandomClient().OwnerName,
+                Amount = Settings.AmountOfRewardTransaction
+            };
+
+            return rewardTransaction;
+        }
+
+        private Pocket GetRandomClient()
+        {
+            return Datas.Pockets.ElementAt(secureRandom.Next(0, Settings.NumbersOfClients + 1));
         }
     }
 }

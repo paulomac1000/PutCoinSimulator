@@ -39,7 +39,7 @@ namespace GeneratorThread
             while (Settings.AppStarted)
             {
                 if (secureRandom.Next(1, 100) <= Settings.ChanceForGenerateFakeTransactionInPercent)
-                    GenerateUnproperTransaction((FakeTransactionType)secureRandom.Next(1,3));
+                    GenerateUnproperTransaction((FakeTransactionType)secureRandom.Next(1,4));
                 else
                     GenerateProperTransfer();
 
@@ -55,9 +55,7 @@ namespace GeneratorThread
             {
                 var pocket = new Pocket
                 {
-                    OwnerName = personGenerator.GenerateRandomFirstAndLastName(),
-                    PrivateKey = Guid.NewGuid().ToString(),
-                    PublicKey = Guid.NewGuid().ToString()
+                    OwnerName = personGenerator.GenerateRandomFirstAndLastName()
                 };
                 pockets.Add(pocket);
             }
@@ -87,12 +85,14 @@ namespace GeneratorThread
             var sender = pocketsWithMoney.ElementAt(secureRandom.Next(0, pocketsWithMoney.Count - 1));
             var receiver = GetRandomReceiver(sender);
 
+            var balance = Helpers.GetAccountBalanceByOwnerName(sender.OwnerName);
+
             var transaction = new Transaction
             {
                 Time = DateTime.Now,
                 Sender = sender.OwnerName,
                 Receiver = receiver.OwnerName,
-                Amount = secureRandom.Next(1, (int)Helpers.GetAccountBalanceByOwnerName(sender.OwnerName) * 10) / 10.0
+                Amount = Math.Round(secureRandom.Next(1, (int)(balance * 10)) / 10.0, 1)
             };
             AddTransaction(transaction);
         }
@@ -106,13 +106,12 @@ namespace GeneratorThread
             switch (type)
             {
                 case FakeTransactionType.BadSignature:
-               // case FakeTransactionType.DoubleSpending:
                     transaction = new Transaction
                     {
                         Time = DateTime.Now,
                         Sender = sender.OwnerName,
                         Receiver = sender.OwnerName,
-                        Amount = secureRandom.Next(1, 30) / 10.0 //0.1 - 3.0
+                        Amount = Math.Round(secureRandom.Next(1, 30) / 10.0, 1) //0.1 - 3.0
                     };
                     break;
                 case FakeTransactionType.DoubleSpending:
@@ -121,7 +120,7 @@ namespace GeneratorThread
                         Time = DateTime.Now,
                         Sender = sender.OwnerName,
                         Receiver = receiver.OwnerName,
-                        Amount = secureRandom.Next(1, 30) / 10.0 //0.1 - 3.0
+                        Amount = Math.Round(secureRandom.Next(1, 30) / 10.0, 1) //0.1 - 3.0
                     };
                     AddTransaction(transaction);
                     break;
@@ -131,7 +130,7 @@ namespace GeneratorThread
                         Time = DateTime.Now,
                         Sender = sender.OwnerName,
                         Receiver = receiver.OwnerName,
-                        Amount = -1 * (secureRandom.Next(1, 30) / 10.0) //0.1 - 3.0
+                        Amount = Math.Round(-1 * (secureRandom.Next(1, 30) / 10.0), 1) //0.1 - 3.0
                     };
                     break;
                 default:
