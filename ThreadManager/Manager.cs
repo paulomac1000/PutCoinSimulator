@@ -48,10 +48,6 @@ namespace ThreadManager
             {
                 cancellationTokenSource.Cancel();
             }
-            foreach (var task in tasks)
-            {
-                task.Dispose();
-            }
             tasks = new List<Task>();
         }
     }
